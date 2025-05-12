@@ -9,6 +9,7 @@ using Quartz;
 using SilkierQuartz.Example.Jobs;
 using System.Collections.Generic;
 using System.IO;
+using System.Collections.Specialized;
 
 namespace SilkierQuartz.Example
 {
@@ -57,7 +58,14 @@ namespace SilkierQuartz.Example
                 authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous;
             }
 #endif
-            );
+    ,
+            stdSchedulerFactoryOptions: options =>
+            {
+                options.Add("quartz.scheduler.instanceName", "example_scheduler");
+                options.Add("quartz.plugin.recentHistory.type", "Quartz.Plugins.RecentHistory.ExecutionHistoryPlugin, Quartz.Plugins.RecentHistory");
+                options.Add("quartz.plugin.recentHistory.storeType", "Quartz.Plugins.RecentHistory.Impl.InProcExecutionHistoryStore, Quartz.Plugins.RecentHistory");
+            });
+
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
