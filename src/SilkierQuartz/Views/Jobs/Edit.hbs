@@ -1,12 +1,12 @@
 ﻿{{!<Layout}}
 {{#if ViewBag.EnableEdit}}
-    {{#if Model.Job.IsNew}}
-        {{ViewBag Title='Add Job'}}
-    {{else}}
-        {{ViewBag Title='Edit Job'}}
-    {{/if}}
+{{#if Model.Job.IsNew}}
+{{ViewBag Title='Add Job'}}
 {{else}}
-    {{ViewBag Title='Job Details'}}
+{{ViewBag Title='Edit Job'}}
+{{/if}}
+{{else}}
+{{ViewBag Title='Job Details'}}
 {{/if}}
 
 <div class="ui inverted page dimmer" id="dimmer"><div class="ui loader"></div></div>
@@ -31,9 +31,9 @@
         {{/if}}
         <h1 class="ui left floated header">
             {{#if ViewBag.EnableEdit}}
-                {{#if Model.Job.IsNew}}Add Job{{else}}Edit Job "{{Model.Job.JobName}}"{{/if}}
+            {{#if Model.Job.IsNew}}Add Job{{else}}Edit Job "{{Model.Job.JobName}}"{{/if}}
             {{else}}
-                Job "{{Model.Job.JobName}}"
+            Job "{{Model.Job.JobName}}"
             {{/if}}
         </h1>
     </div>
@@ -46,61 +46,66 @@
         <input type="hidden" name="job[oldGroup]" value="{{Group}}" />
         {{/unless}}
         <div id="job-properties">
-
             <div class="two fields">
                 <div class="field accept-error">
                     <label>Name</label>
-                    <input type="text" name="job[jobName]" placeholder="Name" value="{{JobName}}" id="jobName" />
+                    <input type="text" name="job[jobName]" placeholder="Name" value="{{JobName}}" id="jobName" {{ReadOnly enableedit}} />
                 </div>
                 <div class="field accept-error">
                     <label>Group</label>
                     <input type="hidden" value="{{Group}}" id="jobGroup" />
+                    {{#if EnableEdit}}
                     <select class="ui search selection dropdown allow-additions" name="job[group]">
                         <option value="">Group</option>
                         {{>DropdownOptions items=GroupList selected=Group}}
                     </select>
+                    {{else}}
+                    <input type="text" name="job[group]" placeholder="Group" value="{{Group}}" id="jobGroup" {{ReadOnly enableedit}} />
+                    {{/if}}
                 </div>
             </div>
-
             <div class="field accept-error">
                 <label>Class</label>
                 <input type="hidden" value="{{Type}}" id="jobType" />
+                {{#if EnableEdit}}
                 <select class="ui search selection dropdown allow-additions" name="job[type]" id="jobTypeDropdown">
                     <option value="">Fully Qualified Type Name</option>
                     {{>DropdownOptions items=TypeList selected=Type}}
                 </select>
+                {{else}}
+                <input type="text" name="job[type]" placeholder="Type" value="{{Type}}" id="jobType" {{ReadOnly enableedit}} />
+                {{/if}}
             </div>
             <div class="field accept-error">
                 <label>Description</label>
-                <textarea rows="2" name="job[description]">{{Description}}</textarea>
+                <textarea rows="2" name="job[description]" {{ReadOnly enableedit}}>{{Description}}</textarea>
             </div>
             <div class="two fields">
                 <div class="field accept-error">
                     <div class="ui checkbox">
-                        <input name="job[durable]" type="checkbox" value="True" {{Checked durable}} />
+                        <input name="job[durable]" type="checkbox" value="True" {{Checked durable}} {{ReadOnly enableedit}}/>
                         <label>Durable</label>
                     </div>
                 </div>
                 <div class="field accept-error">
                     <div class="ui checkbox">
-                        <input name="job[recovery]" type="checkbox" value="True" {{Checked Recovery}} />
+                        <input name="job[recovery]" type="checkbox" value="True" {{Checked Recovery}} {{ReadOnly enableedit}}/>
                         <label>Requests Recovery</label>
                     </div>
                 </div>
                 <div class="field accept-error">
                     <div class="ui checkbox">
-                        <input name="job[concurrent]" type="checkbox" value="True" {{Checked concurrent}} />
+                        <input name="job[concurrent]" type="checkbox" value="True" {{Checked concurrent}} {{ReadOnly enableedit}}/>
                         <label>Concurrent</label>
                     </div>
                 </div>
                 <div class="field accept-error">
                     <div class="ui checkbox">
-                        <input name="job[persist]" type="checkbox" value="True" {{Checked persist}} />
+                        <input name="job[persist]" type="checkbox" value="True" {{Checked persist}} {{ReadOnly enableedit}}/>
                         <label>Persist</label>
                     </div>
                 </div>
             </div>
-
         </div>
         {{/with}}
         <h3 class="ui dividing header">Job Data Map</h3>
@@ -109,6 +114,7 @@
     </div>
 </form>
 
+{{#if ViewBag.EnableEdit}}
 <div class="ui mini modal" id="delete-dialog">
     <div class="content">
         <p>Are you sure you want to delete this job?</p>
@@ -119,6 +125,7 @@
         <div class="ui cancel button">Cancel</div>
     </div>
 </div>
+{{/if}}
 
 <script>
     $(function () {
@@ -140,13 +147,6 @@
         $('#jobTypeDropdown').dropdown('set selected', $jobType);
 
         initDimmer();
-
-        // event handlers
-        $('#btn-delete').click(function () {
-            $('#delete-dialog .confirm-item').text($jobGroup + '.' + $jobName);
-            deleteItem({ name: $jobName, group: $jobGroup }, $('#job-properties'),
-                '{{ActionUrl "Delete"}}', '{{ActionUrl ""}}');
-        });
 
         function save(triggerNow) {
             if ($('#job-data-map .type-col .ui.dropdown.disabled').length > 0) return; // type change in progress
@@ -174,10 +174,23 @@
             });
         }
 
-        $('#btn-save').click(function () { save(false); });
         $('#btn-trigger').click(function () { save(true); });
-
     });
 </script>
+
+{{#if ViewBag.EnableEdit}}
+<script>
+    $(function () {
+        // event handlers
+        $('#btn-delete').click(function () {
+            $('#delete-dialog .confirm-item').text($jobGroup + '.' + $jobName);
+            deleteItem({ name: $jobName, group: $jobGroup }, $('#job-properties'),
+                '{{ActionUrl "Delete"}}', '{{ActionUrl ""}}');
+        });
+
+        $('#btn-save').click(function () { save(false); });
+    });
+</script>
+{{/if}}
 
 <script src="Content/Scripts/post-validation.js"></script>

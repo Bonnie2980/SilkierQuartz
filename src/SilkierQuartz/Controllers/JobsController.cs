@@ -34,7 +34,7 @@ namespace SilkierQuartz.Controllers
                     Group = key.Group,
                     Type = detail.JobType.FullName,
                     History = Histogram.Empty,
-                    Description = detail.Description,
+                    Description = detail.Description
                 };
                 knownTypes.Add(detail.JobType.RemoveAssemblyDetails());
                 list.Add(item);
@@ -69,7 +69,7 @@ namespace SilkierQuartz.Controllers
 
             var jobKey = JobKey.Create(name, group);
             var job = await GetJobDetail(jobKey);
-            var jobDataMap = new JobDataMapModel() { Template = JobDataMapItemTemplate };
+            var jobDataMap = new JobDataMapModel() { Template = JobDataMapItemTemplate, EnableEdit = true };
 
             ViewBag.JobName = name;
             ViewBag.Group = group;
@@ -107,7 +107,7 @@ namespace SilkierQuartz.Controllers
             var job = await GetJobDetail(jobKey);
 
             var jobModel = new JobPropertiesViewModel() { };
-            var jobDataMap = new JobDataMapModel() { Template = JobDataMapItemTemplate };
+            var jobDataMap = new JobDataMapModel() { Template = JobDataMapItemTemplate, EnableEdit = EnableEdit };
 
             jobModel.IsNew = clone;
             jobModel.IsCopy = clone;
@@ -123,6 +123,7 @@ namespace SilkierQuartz.Controllers
             jobModel.Concurrent = !job.ConcurrentExecutionDisallowed;
             jobModel.Persist = job.PersistJobDataAfterExecution;
             jobModel.Durable = job.Durable;
+            jobModel.EnableEdit = EnableEdit;
 
             if (clone)
                 jobModel.JobName += " - Copy";
@@ -236,7 +237,7 @@ namespace SilkierQuartz.Controllers
             return Edit(name, group, clone: true);
         }
 
-        bool EnsureValidKey(string name, string group) => !(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(group));
-        bool EnsureValidKey(KeyModel model) => EnsureValidKey(model.Name, model.Group);
+        static bool EnsureValidKey(string name, string group) => !(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(group));
+        static bool EnsureValidKey(KeyModel model) => EnsureValidKey(model.Name, model.Group);
     }
 }

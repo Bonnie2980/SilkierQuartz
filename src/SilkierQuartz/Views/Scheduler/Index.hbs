@@ -39,8 +39,6 @@
         </div>
     </div>
 
-
-
     <div class="ui stackable grid">
         <div class="{{#if EnableEdit}}seven {{/if}}wide column" style="padding-right: 14px !important">
             <h3 class="ui dividing header">Status</h3>
@@ -153,9 +151,9 @@
             </tr>
         </tbody>
     </table>
-
 </div>
 
+{{#if EnableEdit}}
 <div class="ui mini modal" id="shutdown-dialog">
     <div class="content">
         <p>Are you sure you want to shut down Quartz Scheduler?</p>
@@ -166,13 +164,14 @@
         <div class="ui cancel button">Cancel</div>
     </div>
 </div>
-
-{{/with}}
+{{/if}}
 
 <script>
     initHistogramTooltips($('.histogram > .bar'));
     initDimmer();
-
+</script>
+{{#if EnableEdit}}
+<script>
     function doAction(content) {
         $('#dimmer').dimmer('show');
 
@@ -205,5 +204,6 @@
     $(document).on('click', '#job-groups.group-actions button, #trigger-groups.group-actions button', function () {
         doAction({ action: $(this).data('action'), name: $(this).data('name'), groups: $(this).closest('.group-actions').attr('id') });
     });
-
 </script>
+{{/if}}
+{{/with}}

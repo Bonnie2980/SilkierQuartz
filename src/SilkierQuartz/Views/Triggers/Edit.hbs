@@ -23,9 +23,9 @@
         {{/if}}
         <h1 class="ui left floated header">
             {{#if ViewBag.EnableEdit}}
-            {{#if Model.Trigger.IsNew}}Add Trigger{{else}}Edit Trigger "{{Model.Trigger.TriggerName}}"{{/if}}
+                {{#if Model.Trigger.IsNew}}Add Trigger{{else}}Edit Trigger "{{Model.Trigger.TriggerName}}"{{/if}}
             {{else}}
-            Trigger "{{Model.Trigger.TriggerName}}"
+                Trigger "{{Model.Trigger.TriggerName}}"
             {{/if}}
         </h1>
     </div>

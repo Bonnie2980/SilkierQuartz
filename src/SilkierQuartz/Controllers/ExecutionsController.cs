@@ -33,6 +33,8 @@ namespace SilkierQuartz.Controllers
                 });
             }
 
+            ViewBag.EnableEdit = EnableEdit;
+
             return View(list);
         }
 

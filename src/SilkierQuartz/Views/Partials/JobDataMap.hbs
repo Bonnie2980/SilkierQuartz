@@ -7,9 +7,9 @@
         </tr>
     </thead>
     <tbody>
-        {{>JobDataMapRow item=Template template=true}}
+        {{>JobDataMapRow item=Template template=true edit=EnableEdit}}
         {{#each Items}}{{>JobDataMapRow item=. template=false}}{{/each}}
-        {{>JobDataMapRow item=Template template=false}}
+        {{>JobDataMapRow item=Template template=false edit=EnableEdit}}
     </tbody>
 </table>
 

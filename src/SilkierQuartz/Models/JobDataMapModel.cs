@@ -6,5 +6,7 @@ namespace SilkierQuartz.Models
     {
         public List<JobDataMapItem> Items { get; } = new List<JobDataMapItem>();
         public JobDataMapItem Template { get; set; }
+
+        public bool EnableEdit { get; set; }
     }
 }

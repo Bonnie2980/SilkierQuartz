@@ -76,6 +76,7 @@
     </div>
 </div>
 
+{{#if ViewBag.EnableEdit}}
 <div class="ui mini modal" id="delete-dialog">
     <div class="content">
         <p>Are you sure you want to delete this job?</p>
@@ -86,6 +87,32 @@
         <div class="ui cancel button">Cancel</div>
     </div>
 </div>
+
+<script>
+    // menu handling
+    function bindContextMenu(menu, row, jobName, jobGroup) {
+
+        menu.find('>.menu-edit').attr('href', row.find('>.job-name a').attr('href'));
+        menu.find('>.menu-copy').attr('href', '{{ActionUrl "Duplicate"}}?group=' + encodeURIComponent(jobGroup) + '&name=' + encodeURIComponent(jobName));
+        menu.find('>.menu-trigger').attr('href', '{{ActionUrl "Trigger"}}?group=' + encodeURIComponent(jobGroup) + '&name=' + encodeURIComponent(jobName));
+        menu.find('>.menu-delete').click(function () {
+            $('#delete-dialog .confirm-item').text(jobGroup + '.' + jobName);
+            deleteItem({ name: jobName, group: jobGroup }, $('#msg-panel'),
+                '{{ActionUrl "Delete"}}', '{{ActionUrl ""}}');
+        });
+
+        return menu;
+    }
+</script>
+{{else}}
+<script>
+    // menu handling
+    function bindContextMenu(menu, row, jobName, jobGroup) {
+        menu.find('>.menu-trigger').attr('href', '{{ActionUrl "Trigger"}}?group=' + encodeURIComponent(jobGroup) + '&name=' + encodeURIComponent(jobName));
+        return menu;
+    }
+</script>
+{{/if}}
 
 <script>
 
@@ -138,22 +165,6 @@
 
         jobNameElm.append('<button class="ui icon mini detail button"><i class="dots icon"></i></button>');
     });
-
-    // menu handling
-
-    function bindContextMenu(menu, row, jobName, jobGroup) {
-
-        menu.find('>.menu-edit').attr('href', row.find('>.job-name a').attr('href'));
-        menu.find('>.menu-copy').attr('href', '{{ActionUrl "Duplicate"}}?group=' + encodeURIComponent(jobGroup) + '&name=' + encodeURIComponent(jobName));
-        menu.find('>.menu-trigger').attr('href', '{{ActionUrl "Trigger"}}?group=' + encodeURIComponent(jobGroup) + '&name=' + encodeURIComponent(jobName));
-        menu.find('>.menu-delete').click(function () {
-            $('#delete-dialog .confirm-item').text(jobGroup +'.' + jobName);
-            deleteItem({ name: jobName, group: jobGroup }, $('#msg-panel'),
-                '{{ActionUrl "Delete"}}', '{{ActionUrl ""}}');
-        });
-
-        return menu;
-    }
 
     $('#job-list > tbody').on('click', '> tr > td > .detail.button', function () {
         const $button = $(this), $_ = $(this).closest('tr'), jobName = $_.find('>.job-name a').text(), jobGroup = $_.find('>.job-group').text();

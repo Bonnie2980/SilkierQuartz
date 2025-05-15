@@ -34,9 +34,11 @@
 {{/unless}}
 
 <script>
-
     initDimmer();
+</script>
 
+{{#if EnableEdit}}
+<script>
     $(document).on('click', '.btn-interrupt', function () {
 
         $('#dimmer').dimmer('show');
@@ -62,7 +64,6 @@
                 prependErrorMessage(e, $('#msg-panel'));
             }
         });
-
     });
-
 </script>
+{{/if}}

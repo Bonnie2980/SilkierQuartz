@@ -82,6 +82,7 @@
 {{>EmptyList 'trigger'}}
 {{/unless}}
 
+{{#if ViewBag.EnableEdit}}
 <div style="display:none">
     <div class="ui small vertical menu borderless" id="trigger-context-menu">
         <a class="item menu-edit"><i class="left large blue pencil alternate icon"></i>Edit</a>
@@ -102,6 +103,7 @@
         <div class="ui cancel button">Cancel</div>
     </div>
 </div>
+{{/if}}
 
 <script>
     initDimmer();
@@ -109,7 +111,8 @@
     // search handling
 
     var fGroup = undefined,
-        enableEdit = {{{ ViewBag.EnableEdit }}};
+        enableEdit = '{{{ ViewBag.EnableEdit }}}' == 'True';
+
     function applyFilter() {
         const fStr = $('#search-trigger').val().toLowerCase();
         $('#trigger-list > tbody > tr.job-key').hide();
@@ -166,6 +169,13 @@
         }
     });
 
+    // lazy loading
+    loadAdditionalData(rowIndex, '{{ActionUrl "AdditionalData"}}');
+
+</script>
+
+{{#if ViewBag.EnableEdit}}
+<script>
     function doAction(url, key) {
         $('#dimmer').dimmer('show');
         $.ajax({
@@ -183,7 +193,6 @@
     }
 
     // menu handling
-
     function bindContextMenu(menu, row, triggerName, triggerGroup) {
 
         const btn = row.find('.detail.button');
@@ -238,8 +247,5 @@
         doAction($(this).attr('href'), { name: jobName, group: jobGroup });
         return false;
     });
-
-    // lazy loading
-    loadAdditionalData(rowIndex, '{{ActionUrl "AdditionalData"}}');
-
 </script>
+{{/if}}

@@ -52,13 +52,14 @@ namespace SilkierQuartz.Helpers
             h.RegisterHelper("Upper", (o, c, a) => o.Write(a[0].ToString().ToUpper()));
             h.RegisterHelper("Lower", (o, c, a) => o.Write(a[0].ToString().ToLower()));
             h.RegisterHelper("LocalTimeZoneInfoId", (o, c, a) => o.Write(TimeZoneInfo.Local.Id));
-            h.RegisterHelper("SystemTimeZonesJson", (o, c, a) => Json(o, c, a,TimeZoneInfo.GetSystemTimeZones().ToDictionary()));
+            h.RegisterHelper("SystemTimeZonesJson", (o, c, a) => Json(o, c, a, TimeZoneInfo.GetSystemTimeZones().ToDictionary()));
             h.RegisterHelper("DefaultDateFormat", (o, c, a) => o.Write(DateTimeSettings.DefaultDateFormat));
             h.RegisterHelper("DefaultTimeFormat", (o, c, a) => o.Write(DateTimeSettings.DefaultTimeFormat));
             h.RegisterHelper("DoLayout", (o, c, a) => (c.Value as Histogram)?.Layout());
             h.RegisterHelper("SerializeTypeHandler", (o, c, a) => o.WriteSafeString(_services.TypeHandlers.Serialize((TypeHandlerBase)c.Value)));
             h.RegisterHelper("Disabled", (o, c, a) => { if (IsTrue(a[0])) o.Write("disabled"); });
             h.RegisterHelper("Checked", (o, c, a) => { if (IsTrue(a[0])) o.Write("checked"); });
+            h.RegisterHelper("ReadOnly", (o, c, a) => { if (!IsTrue(a[0])) o.Write("readonly"); });
             h.RegisterHelper("nvl", (o, c, a) => o.Write(a[a[0] == null ? 1 : 0]));
             h.RegisterHelper("not", (o, c, a) => o.Write(IsTrue(a[0]) ? "False" : "True"));
 
@@ -123,7 +124,7 @@ namespace SilkierQuartz.Helpers
             return sb.ToString();
         }
 
-        void ViewBag(EncodedTextWriter output, Context context, Arguments    arguments)
+        void ViewBag(EncodedTextWriter output, Context context, Arguments arguments)
         {
             var dict = (IDictionary<string, object>)arguments[0];
             var viewBag = (IDictionary<string, object>)context["ViewBag"];
@@ -138,7 +139,7 @@ namespace SilkierQuartz.Helpers
         {
             var dict = arguments[0] as IDictionary<string, object> ?? new Dictionary<string, object>() { ["controller"] = arguments[0] };
 
-            if (string.Equals(dict["controller"], "Authenticate/Logout") && (authenticationOptions==null || authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous))
+            if (string.Equals(dict["controller"], "Authenticate/Logout") && (authenticationOptions == null || authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous))
             {
                 return;
             }
@@ -218,7 +219,7 @@ namespace SilkierQuartz.Helpers
             var item = (JobDataMapItem)arguments[0];
             output.WriteSafeString(item.SelectedType.RenderView(_services, item.Value));
         }
-        void isType(EncodedTextWriter writer, BlockHelperOptions options,   Context context,   Arguments   arguments)
+        void isType(EncodedTextWriter writer, BlockHelperOptions options, Context context, Arguments arguments)
         {
             Type[] expectedType;
 
@@ -239,9 +240,9 @@ namespace SilkierQuartz.Helpers
             var t = arguments[0]?.GetType();
 
             if (expectedType.Any(x => x.IsAssignableFrom(t)))
-                options.Template(writer,  context.Value);
+                options.Template(writer, context.Value);
             else
-                options.Inverse(writer,  context.Value);
+                options.Inverse(writer, context.Value);
         }
 
         void eachPair(EncodedTextWriter writer, BlockHelperOptions options, Context context, Arguments arguments)
@@ -282,7 +283,7 @@ namespace SilkierQuartz.Helpers
             }
         }
 
-        void SilkierQuartzVersion(EncodedTextWriter  output, Context context, Arguments arguments)
+        void SilkierQuartzVersion(EncodedTextWriter output, Context context, Arguments arguments)
         {
             var v = GetType().Assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().FirstOrDefault();
             output.Write(v.InformationalVersion);

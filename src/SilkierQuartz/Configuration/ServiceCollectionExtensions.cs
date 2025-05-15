@@ -43,15 +43,12 @@ namespace Microsoft.Extensions.DependencyInjection
                         cfg.SlidingExpiration = true;
                     });
             }
-            services.AddAuthorization(opts =>
-                {
-                    opts.AddPolicy(SilkierQuartzAuthenticationOptions.AuthorizationPolicyName, builder =>
+            services.AddAuthorizationBuilder()
+                .AddPolicy(SilkierQuartzAuthenticationOptions.AuthorizationPolicyName, builder =>
                     {
                         builder.AddRequirements(new SilkierQuartzDefaultAuthorizationRequirement(authenticationOptions.AccessRequirement));
                     });
-                });
             services.AddScoped<IAuthorizationHandler, SilkierQuartzDefaultAuthorizationHandler>();
-
 
             services.UseQuartzHostedService(stdSchedulerFactoryOptions);
 

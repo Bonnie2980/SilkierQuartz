@@ -43,7 +43,8 @@ namespace SilkierQuartz.Models
         public bool Durable { get; set; }
         
         public bool Persist { get; set; }
-        
+
+        public bool EnableEdit { get; set; }
 
         public void Validate(ICollection<ValidationError> errors) => ModelValidator.ValidateObject(this, errors, nameof(JobViewModel.Job));
     }
