@@ -1,33 +1,24 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Quartz.Impl;
 using Quartz;
 using Quartz.Spi;
 using System.Linq;
 
 namespace SilkierQuartz.HostedService
 {
-    internal class QuartzHostedService : IHostedService
+    internal class QuartzHostedService(
+        IServiceProvider services,
+        ISchedulerFactory schedulerFactory,
+        IJobFactory jobFactory) : IHostedService
     {
-        private IServiceProvider Services { get; }
+        private IServiceProvider Services { get; } = services;
         private IScheduler _scheduler;
-        private ISchedulerFactory _schedulerFactory;
-        private IJobFactory _jobFactory { get; }
-
-        public QuartzHostedService(
-            IServiceProvider services,
-            ISchedulerFactory schedulerFactory,
-            IJobFactory jobFactory)
-        {
-            Services = services;
-            _schedulerFactory = schedulerFactory;
-            _jobFactory = jobFactory;
-        }
+        private ISchedulerFactory _schedulerFactory = schedulerFactory;
+        private IJobFactory _jobFactory { get; } = jobFactory;
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {

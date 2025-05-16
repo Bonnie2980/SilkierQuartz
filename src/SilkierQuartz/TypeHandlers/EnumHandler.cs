@@ -59,9 +59,7 @@ namespace SilkierQuartz.TypeHandlers
 
         public override KeyValuePair<string, string>[] GetItems()
         {
-            return Enum.GetNames(EnumType)
-                .Select(x => new KeyValuePair<string, string>(x, GetDisplayName(x)))
-                .ToArray();
+            return [.. Enum.GetNames(EnumType).Select(x => new KeyValuePair<string, string>(x, GetDisplayName(x)))];
         }
     }
 }

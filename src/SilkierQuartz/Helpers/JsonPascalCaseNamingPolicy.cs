@@ -1,5 +1,4 @@
 ﻿#if NETCOREAPP
-using System;
 using System.Text.Json;
 
 namespace SilkierQuartz.Helpers

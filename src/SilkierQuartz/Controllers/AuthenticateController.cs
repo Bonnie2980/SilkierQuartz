@@ -11,14 +11,9 @@ using System.Threading.Tasks;
 namespace SilkierQuartz.Controllers
 {
     [AllowAnonymous]
-    public class AuthenticateController : PageControllerBase
+    public class AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions) : PageControllerBase
     {
-        private readonly SilkierQuartzAuthenticationOptions authenticationOptions;
-
-        public AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions)
-        {
-            this.authenticationOptions = authenticationOptions ?? throw new ArgumentNullException(nameof(authenticationOptions));
-        }
+        private readonly SilkierQuartzAuthenticationOptions authenticationOptions = authenticationOptions ?? throw new ArgumentNullException(nameof(authenticationOptions));
 
         [HttpGet]
         public async Task<IActionResult> Login([FromServices] IAuthenticationSchemeProvider schemes)
@@ -68,8 +63,8 @@ namespace SilkierQuartz.Controllers
         public async Task<IActionResult> Login([FromForm] AuthenticateViewModel request)
         {
             var form = HttpContext.Request.Form;
-            if (!authenticationOptions.Authenticate(request.UserName, 
-                request.Password, authenticationOptions.UserName, 
+            if (!authenticationOptions.Authenticate(request.UserName,
+                request.Password, authenticationOptions.UserName,
                 authenticationOptions.Password))
             {
                 request.IsLoginError = true;
@@ -94,15 +89,15 @@ namespace SilkierQuartz.Controllers
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, string.IsNullOrEmpty(userName)
+                new(ClaimTypes.NameIdentifier, string.IsNullOrEmpty(userName)
                     ? "SilkierQuartzAdmin"
                     : authenticationOptions.UserName),
 
-                new Claim(ClaimTypes.Name, string.IsNullOrEmpty(password)
+                new(ClaimTypes.Name, string.IsNullOrEmpty(password)
                     ? "SilkierQuartzPassword"
                     : authenticationOptions.Password),
 
-                new Claim(authenticationOptions.SilkierQuartzClaim, authenticationOptions.SilkierQuartzClaimValue)
+                new(authenticationOptions.SilkierQuartzClaim, authenticationOptions.SilkierQuartzClaimValue)
             };
 
             var authProperties = new AuthenticationProperties()

@@ -43,7 +43,7 @@ namespace SilkierQuartz.Controllers
                 newValue = targetType.ConvertFrom(str);
             }
 
-            return Html(targetType.RenderView(Services, newValue));
+            return Html(targetType.RenderView(Services, newValue, true));
         }
 
         [HttpGet, ActionName("TypeHandlers.js")]

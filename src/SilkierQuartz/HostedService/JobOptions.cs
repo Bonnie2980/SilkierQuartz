@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SilkierQuartz.HostedService
+﻿namespace SilkierQuartz.HostedService
 {
     public class JobOptions
     {

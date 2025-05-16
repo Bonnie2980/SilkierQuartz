@@ -1,7 +1,7 @@
 ﻿<tr class="{{#if template}}template{{/if}}">
-    <td class="name-col field accept-error"><input type="text" name="data-map[name]" placeholder="Parameter Name" value="{{item.Name}}" autocomplete="off"></td>
+    <td class="name-col field accept-error"><input type="text" name="data-map[name]" placeholder="Parameter Name" value="{{item.Name}}" autocomplete="off" {{ReadOnly edit}}></td>
     <td class="value-col field accept-error">
-        {{RenderJobDataMapValue  item}}
+        {{RenderJobDataMapValue item edit}}
     </td>
     <td class="type-col">
         <input type="hidden" class="type-handler" name="data-map[handler]" />

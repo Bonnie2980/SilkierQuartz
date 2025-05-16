@@ -3,20 +3,13 @@ using Quartz;
 using Quartz.Spi;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SilkierQuartz.HostedService
 {
-    public class ServiceCollectionJobFactory : IJobFactory
+    public class ServiceCollectionJobFactory(IServiceProvider container) : IJobFactory
     {
-        protected readonly IServiceProvider Container;
-        private ConcurrentDictionary<IJob, IServiceScope> _createdJob = new ConcurrentDictionary<IJob, IServiceScope>();
-
-        public ServiceCollectionJobFactory(IServiceProvider container)
-        {
-            Container = container;
-        }
+        protected readonly IServiceProvider Container = container;
+        private ConcurrentDictionary<IJob, IServiceScope> _createdJob = new();
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {

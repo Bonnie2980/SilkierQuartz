@@ -281,11 +281,7 @@ namespace SilkierQuartz.Controllers
 
         private async Task<ITrigger> GetTrigger(TriggerKey key)
         {
-            var trigger = await Scheduler.GetTrigger(key);
-
-            if (trigger == null)
-                throw new InvalidOperationException("Trigger " + key + " not found.");
-
+            var trigger = await Scheduler.GetTrigger(key) ?? throw new InvalidOperationException("Trigger " + key + " not found.");
             return trigger;
         }
 
@@ -316,8 +312,8 @@ namespace SilkierQuartz.Controllers
             return Edit(name, group, clone: true);
         }
 
-        bool EnsureValidKey(string name, string group) => !(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(group));
+        private static bool EnsureValidKey(string name, string group) => !(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(group));
 
-        bool EnsureValidKey(KeyModel model) => EnsureValidKey(model.Name, model.Group);
+        private static bool EnsureValidKey(KeyModel model) => EnsureValidKey(model.Name, model.Group);
     }
 }

@@ -1,12 +1,12 @@
 ﻿{{!<Layout}}
 {{#if ViewBag.EnableEdit}}
-{{#if Model.Job.IsNew}}
-{{ViewBag Title='Add Job'}}
+    {{#if Model.Job.IsNew}}
+        {{ViewBag Title='Add Job'}}
+    {{else}}
+        {{ViewBag Title='Edit Job'}}
+    {{/if}}
 {{else}}
-{{ViewBag Title='Edit Job'}}
-{{/if}}
-{{else}}
-{{ViewBag Title='Job Details'}}
+    {{ViewBag Title='Job Details'}}
 {{/if}}
 
 <div class="ui inverted page dimmer" id="dimmer"><div class="ui loader"></div></div>
@@ -31,9 +31,9 @@
         {{/if}}
         <h1 class="ui left floated header">
             {{#if ViewBag.EnableEdit}}
-            {{#if Model.Job.IsNew}}Add Job{{else}}Edit Job "{{Model.Job.JobName}}"{{/if}}
+                {{#if Model.Job.IsNew}}Add Job{{else}}Edit Job "{{Model.Job.JobName}}"{{/if}}
             {{else}}
-            Job "{{Model.Job.JobName}}"
+                Job "{{Model.Job.JobName}}"
             {{/if}}
         </h1>
     </div>

@@ -35,7 +35,6 @@ namespace SilkierQuartz.Controllers
             return new JsonResult(content, serializerOptions);
         }
 
-
         protected IActionResult NotModified() => new StatusCodeResult(304);
 
         protected IEnumerable<string> GetHeader(string key)
@@ -53,9 +52,9 @@ namespace SilkierQuartz.Controllers
 
         protected dynamic ViewBag { get; } = new ExpandoObject();
 
-        internal class Page
+        internal class Page(PageControllerBase controller, object model = null)
         {
-            PageControllerBase _controller;
+            PageControllerBase _controller = controller;
 
             public string ControllerName => _controller.GetRouteData("controller");
 
@@ -65,13 +64,7 @@ namespace SilkierQuartz.Controllers
 
             public object ViewBag => _controller.ViewBag;
 
-            public object Model { get; set; }
-
-            public Page(PageControllerBase controller, object model = null)
-            {
-                _controller = controller;
-                Model = model;
-            }
+            public object Model { get; set; } = model;
         }
 
         protected IActionResult View(object model)

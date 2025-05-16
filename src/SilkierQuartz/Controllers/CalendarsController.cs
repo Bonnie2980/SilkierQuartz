@@ -50,7 +50,7 @@ namespace SilkierQuartz.Controllers
 
             var model = calendar.Flatten().Select(x => CalendarViewModel.FromCalendar(x)).ToArray();
 
-            if (model.Any())
+            if (model.Length != 0)
             {
                 model[0].IsRoot = true;
                 model[0].Name = name;
@@ -61,7 +61,7 @@ namespace SilkierQuartz.Controllers
             return View(model);
         }
 
-        private void RemoveLastEmpty(List<string> list)
+        private static void RemoveLastEmpty(List<string> list)
         {
             if (list?.Count > 0 && string.IsNullOrEmpty(list.Last()))
                 list.RemoveAt(list.Count - 1);

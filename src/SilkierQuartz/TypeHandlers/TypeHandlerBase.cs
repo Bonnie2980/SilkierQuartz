@@ -25,17 +25,18 @@ namespace SilkierQuartz.TypeHandlers
             set
             {
                 _name = value;
-                DisplayName = DisplayName ?? _name;
+                DisplayName ??= _name;
             }
         }
 
         public string DisplayName { get; set; }
 
-        public virtual string RenderView(Services services, object value)
+        public virtual string RenderView(Services services, object value,  bool enableEdit)
         {
             return services.TypeHandlers.Render(this, new
             {
                 Value = value,
+                EnableEdit = enableEdit,
                 StringValue = ConvertToString(value),
                 TypeHandler = this
             });

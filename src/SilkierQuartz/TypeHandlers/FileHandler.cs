@@ -50,7 +50,7 @@ namespace SilkierQuartz.TypeHandlers
             return null;
         }
 
-        bool HasBinaryContent(string content)
+        private static bool HasBinaryContent(string content)
         {
             return content.Take(1024).Any(ch => char.IsControl(ch) && ch != '\r' && ch != '\n' && ch != '\t');
         }

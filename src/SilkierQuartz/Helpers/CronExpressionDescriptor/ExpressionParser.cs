@@ -8,7 +8,12 @@ namespace CronExpressionDescriptor
     /// <summary>
     /// Cron Expression Parser
     /// </summary>
-    public class ExpressionParser
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ExpressionParser"/> class
+    /// </remarks>
+    /// <param name="expression">The cron expression string</param>
+    /// <param name="options">Parsing options</param>
+    public class ExpressionParser(string expression, Options options)
     {
         /* Cron reference
 
@@ -24,21 +29,9 @@ namespace CronExpressionDescriptor
 
          */
 
-        private string m_expression;
-        private Options m_options;
-        private CultureInfo m_en_culture;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionParser"/> class
-        /// </summary>
-        /// <param name="expression">The cron expression string</param>
-        /// <param name="options">Parsing options</param>
-        public ExpressionParser(string expression, Options options)
-        {
-            m_expression = expression;
-            m_options = options;
-            m_en_culture = new CultureInfo("en-US"); //Default to English
-        }
+        private string m_expression = expression;
+        private Options m_options = options;
+        private CultureInfo m_en_culture = new("en-US");
 
         /// <summary>
         /// Parses the cron expression string

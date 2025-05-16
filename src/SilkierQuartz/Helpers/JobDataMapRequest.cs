@@ -20,7 +20,7 @@ namespace SilkierQuartz.Helpers
                 {
                     var field = item.Key.Substring(0, item.Key.Length - g.Length - 1);
                     if (!map.ContainsKey(g))
-                        map[g] = new Dictionary<string, object>();
+                        map[g] = [];
                     map[g][field] = item.Value;
                 }
             }

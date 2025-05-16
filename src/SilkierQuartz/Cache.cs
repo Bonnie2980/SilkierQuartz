@@ -5,14 +5,9 @@ using System.Linq;
 
 namespace SilkierQuartz
 {
-    internal class Cache
+    internal class Cache(Services services)
     {
-        private readonly Services _services;
-        public Cache(Services services)
-        {
-            _services = services;
-        }
-
+        private readonly Services _services = services;
         private string[] _jobTypes;
         public string[] JobTypes
         {
@@ -43,8 +38,7 @@ namespace SilkierQuartz
         {
             if (_jobTypes != null)
                 list = list.Concat(_jobTypes); // append existing types
-            _jobTypes = list.Distinct().OrderBy(x => x).ToArray();
+            _jobTypes = [.. list.Distinct().OrderBy(x => x)];
         }
-
     }
 }

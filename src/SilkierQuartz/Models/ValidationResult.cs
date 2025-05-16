@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace SilkierQuartz.Models
 {
     public class ValidationResult
     {
-        public bool Success => !Errors.Any();
+        public bool Success => Errors.Count == 0;
 
         public List<ValidationError> Errors { get; set; } = new List<ValidationError>();
     }

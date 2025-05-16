@@ -82,7 +82,7 @@ namespace SilkierQuartz.Helpers
 
         static string FirstCharToLower(string input)
         {
-            if (String.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(input))
                 return input;
 
             return input[0].ToString().ToLower() + input.Substring(1);

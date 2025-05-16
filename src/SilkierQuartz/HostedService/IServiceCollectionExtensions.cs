@@ -12,6 +12,7 @@ namespace SilkierQuartz
     public static class IServiceCollectionExtensions
     {
         private static bool _quartzHostedServiceIsAdded = false;
+
         /// <summary>
         ///  Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
         /// </summary>
@@ -22,6 +23,7 @@ namespace SilkierQuartz
             _quartzHostedServiceIsAdded = true;
             return builder.ConfigureServices(services => services.AddHostedService<QuartzHostedService>());
         }
+
         [Obsolete("We recommend ConfigureSilkierQuartzHost")]
         public static IHostBuilder ConfigureQuartzHost(this IHostBuilder builder) => builder.ConfigureSilkierQuartzHost();
 

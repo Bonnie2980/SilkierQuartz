@@ -17,9 +17,7 @@ namespace SilkierQuartz.Configuration
                 {
                     var types1 = from t in Assembly.GetEntryAssembly().GetTypes() where t.GetTypeInfo().ImplementedInterfaces.Any(tx => tx == typeof(IJob)) && t.GetTypeInfo().IsDefined(typeof(SilkierQuartzAttribute), true) select t;
                     var types = from t in Assembly.GetCallingAssembly().GetTypes() where t.GetTypeInfo().ImplementedInterfaces.Any(tx => tx == typeof(IJob)) && t.GetTypeInfo().IsDefined(typeof(SilkierQuartzAttribute), true) select t;
-                    _silkierQuartzJobs = new List<Type>();
-                    _silkierQuartzJobs.AddRange(types.ToList());
-                    _silkierQuartzJobs.AddRange(types1.ToList());
+                    _silkierQuartzJobs = [.. types.ToList(), .. types1.ToList()];
                     lists?.ForEach(asm =>
                     {
                         var typeasm = from t in asm.GetTypes() where t.GetTypeInfo().ImplementedInterfaces.Any(tx => tx == typeof(IJob)) && t.GetTypeInfo().IsDefined(typeof(SilkierQuartzAttribute), true) select t;

@@ -1,9 +1,7 @@
 ﻿using HandlebarsDotNet;
 using Microsoft.Extensions.FileProviders;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace SilkierQuartz
 {

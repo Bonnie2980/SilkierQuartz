@@ -81,11 +81,11 @@ namespace SilkierQuartz.Controllers
                 JobGroups = pausedJobGroups,
                 TriggerGroups = pausedTriggerGroups,
                 HistoryEnabled = histStore != null,
-                EnableEdit = EnableEdit
+                EnableEdit
             });
         }
 
-        async Task<IEnumerable<object>> GetGroupPauseState(IEnumerable<string> groups, Func<string, Task<bool>> func)
+        private async Task<IEnumerable<object>> GetGroupPauseState(IEnumerable<string> groups, Func<string, Task<bool>> func)
         {
             var result = new List<object>();
 

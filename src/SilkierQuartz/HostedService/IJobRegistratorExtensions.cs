@@ -120,7 +120,7 @@ namespace SilkierQuartz
             Type t,
             TriggerBuilder triggerBuilder)
         {
-            return app.UseQuartzJob(t, new TriggerBuilder[] { triggerBuilder });
+            return app.UseQuartzJob(t, [triggerBuilder]);
         }
 
         public static IApplicationBuilder UseQuartzJob(

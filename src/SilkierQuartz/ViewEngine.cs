@@ -5,18 +5,12 @@ using System.Globalization;
 
 namespace SilkierQuartz
 {
-    public class ViewEngine
+    public class ViewEngine(Services services)
     {
-        readonly Services _services;
+        readonly Services _services = services;
         readonly Dictionary<string, HandlebarsTemplate<object, string>> _compiledViews = new Dictionary<string, HandlebarsTemplate<object, string>>(StringComparer.OrdinalIgnoreCase);
 
-        public bool UseCache { get; set; }
-
-        public ViewEngine(Services services)
-        {
-            _services = services;
-            UseCache = string.IsNullOrEmpty(services.Options.ViewsRootDirectory);
-        }
+        public bool UseCache { get; set; } = string.IsNullOrEmpty(services.Options.ViewsRootDirectory);
 
         HandlebarsTemplate<object, string> GetRenderDelegate(string templatePath)
         {

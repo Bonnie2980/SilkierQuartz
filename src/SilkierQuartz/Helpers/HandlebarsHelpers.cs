@@ -5,7 +5,6 @@ using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -217,8 +216,11 @@ namespace SilkierQuartz.Helpers
         void RenderJobDataMapValue(EncodedTextWriter output, Context context, Arguments arguments)
         {
             var item = (JobDataMapItem)arguments[0];
-            output.WriteSafeString(item.SelectedType.RenderView(_services, item.Value));
+            var enableEdit = (bool)arguments[1];
+
+            output.WriteSafeString(item.SelectedType.RenderView(_services, item.Value, enableEdit));
         }
+		
         void isType(EncodedTextWriter writer, BlockHelperOptions options, Context context, Arguments arguments)
         {
             Type[] expectedType;
@@ -293,6 +295,7 @@ namespace SilkierQuartz.Helpers
         {
             output.Write(_services.Options.Logo);
         }
+		
         void ProductName(EncodedTextWriter output, Context context, Arguments arguments)
         {
             output.Write(_services.Options.ProductName);

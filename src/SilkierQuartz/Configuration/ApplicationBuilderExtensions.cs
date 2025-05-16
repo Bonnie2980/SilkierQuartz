@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
@@ -33,6 +32,7 @@ namespace Microsoft.AspNetCore.Builder
         {
             return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetScheduler(schedName).Result;
         }
+
         /// <summary>
         /// Returns handles to all known Schedulers (made by any SchedulerFactory within  this app domain.
         /// </summary>
@@ -72,10 +72,7 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     options.Scheduler = null;
                 }
-                if (options.Scheduler == null)
-                {
-                    options.Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
-                }
+                options.Scheduler ??= StdSchedulerFactory.GetDefaultScheduler().Result;
             }
             var services = Services.Create(options, authenticationOptions);
             configure?.Invoke(services);
@@ -152,7 +149,6 @@ namespace Microsoft.AspNetCore.Builder
            
             var manifestEmbeddedProvider =
                 new EmbeddedFileProvider(typeof(SilkierQuartzOptions).Assembly);
-    
 
             fs = new EmbeddedFileProvider(typeof(SilkierQuartzOptions).Assembly, "SilkierQuartz.Content");
             var fsOptions = new FileServerOptions()
@@ -167,4 +163,3 @@ namespace Microsoft.AspNetCore.Builder
         }
     }
 }
-

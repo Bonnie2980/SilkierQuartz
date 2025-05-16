@@ -10,7 +10,7 @@ namespace SilkierQuartz.TypeHandlers
         public override bool CanHandle(object value)
         {
             if (value is string str)
-                return (str.IndexOf('\n') != -1) == IsMultiline;
+                return (str.Contains('\n')) == IsMultiline;
 
             return false;
         }
@@ -20,7 +20,7 @@ namespace SilkierQuartz.TypeHandlers
             if (value is string str)
             {
                 if (IsMultiline == false)
-                    return str.Substring(0, Math.Min(str.Length, 0x10000)); // for simple string field, constrain maximum length
+                    return str[..Math.Min(str.Length, 0x10000)]; // for simple string field, constrain maximum length
 
                 return str;
             }

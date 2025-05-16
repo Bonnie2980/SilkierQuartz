@@ -214,7 +214,7 @@ namespace SilkierQuartz
                 {
                     Enabled = true,
                     Name = pair.Key,
-                    Value = pair.Value,
+                    Value = pair.Value
                 };
 
                 var typeHandlers = new List<TypeHandlerBase>();
@@ -318,29 +318,24 @@ namespace SilkierQuartz
             return null;
         }
 
-        private class TimespanPart
+        private class TimespanPart(string singular)
         {
-            public static readonly TimespanPart[] Items = new[]
-            {
-            new TimespanPart("day", 1000 * 60 * 60 * 24),
-            new TimespanPart("hour", 1000 * 60 * 60),
-            new TimespanPart("minute", 1000 * 60),
-            new TimespanPart("second", 1000),
-            new TimespanPart("millisecond", 1),
-        };
+            public static readonly TimespanPart[] Items =
+            [
+                new TimespanPart("day", 1000 * 60 * 60 * 24),
+                new TimespanPart("hour", 1000 * 60 * 60),
+                new TimespanPart("minute", 1000 * 60),
+                new TimespanPart("second", 1000),
+                new TimespanPart("millisecond", 1)
+            ];
 
-            public string Singular { get; set; }
-            public string Plural { get; set; }
+            public string Singular { get; set; } = singular;
+            public string Plural { get; set; } = singular + "s";
             public long Multiplier { get; set; }
 
             public TimespanPart(string singular, long multiplier) : this(singular)
             {
                 Multiplier = multiplier;
-            }
-            public TimespanPart(string singular)
-            {
-                Singular = singular;
-                Plural = singular + "s";
             }
         }
 
@@ -406,7 +401,6 @@ namespace SilkierQuartz
 
             return result;
         }
-
 
         public static string ToShortFormat(this TimeOfDay timeOfDay)
         {

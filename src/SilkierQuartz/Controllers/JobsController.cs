@@ -139,10 +139,7 @@ namespace SilkierQuartz.Controllers
         {
             var job = await Scheduler.GetJobDetail(key);
 
-            if (job == null)
-                throw new InvalidOperationException("Job " + key + " not found.");
-
-            return job;
+            return job ?? throw new InvalidOperationException("Job " + key + " not found.");
         }
 
         [HttpPost, JsonErrorResponse]
